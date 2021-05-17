@@ -13,11 +13,8 @@ class Adduser extends React.Component {
             email: '',
             apiResponse: ''
         }
-        this.onFormSubmit = this.onFormSubmit.bind(this)
-        this.onChange = this.onChange.bind(this)
-        this.fileUpload = this.fileUpload.bind(this)
     }
-    onFormSubmit(e) {
+    onFormSubmit = (e) => {
         e.preventDefault() // Stop form submit
         const data = {
             name: this.state.name,
@@ -25,17 +22,19 @@ class Adduser extends React.Component {
             profilepicture: this.state.file
         }
 
-        this.fileUpload(data)
+        this.fileUpload(e, data)
             .then((response) => {
                 this.setState({ apiResponse: response.data.message })
                 console.log(response, "ressss");
             })
     }
-    onChange(e) {
+
+    onChange = (e) => {
         this.setState({ file: e.target.files[0] })
     }
 
-    fileUpload(apiData) {
+    fileUpload = (e, apiData) => {
+        e.preventDefault()
         const url = apiConfig.URL + 'adduser';
         const formData = new FormData();
         formData.append('name', apiData.name)
@@ -56,7 +55,7 @@ class Adduser extends React.Component {
                    <Row>
                       <Col md={2}></Col>
                       <Col md={8}>
-                        <Form onSubmit={() => this.onFormSubmit()}>
+                        <Form onSubmit={this.onFormSubmit}>
                             <FormGroup className='mt-3'>
                                 <Label>Name</Label>
                                 <Input
@@ -82,16 +81,16 @@ class Adduser extends React.Component {
                             <FormGroup className='mt-3'>
                                 <Label>Image</Label>
                                 <Input
-                                    onChange={this.onChange}
+                                    onChange={(e) => this.onChange(e)}
                                     type="file"
                                     name="file"
                                     placeholder="file placeholder" />
                             </FormGroup>
-                            <Button type='submit' className='mt-3'>
+                            <Button type="submit" className='mt-3'>
                                Submit
                             </Button>
                         </Form>
-                          </Col>
+                      </Col>
                    </Row>
                 {this.state.apiResponse}
             </Container>
@@ -101,5 +100,3 @@ class Adduser extends React.Component {
 }
 
 export default Adduser;
-
-
