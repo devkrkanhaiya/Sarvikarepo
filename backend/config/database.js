@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const keys = require('./keys');
 
 const connectDB = async () => {
-    const conn = await mongoose.connect(keys.MONGODB_URI, {
+    const conn = await mongoose.connect(keys.mongoURI, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false,
